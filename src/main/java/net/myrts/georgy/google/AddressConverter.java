@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 
 
 /**
- * Created by georgy on 15.11.15.
+ * Created by Oleksandr Pavlov avpavlov108@gmail.com on 15.11.15.
  */
 public class AddressConverter {
 
