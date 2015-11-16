@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "lat",
     "lng"
 })
-public class Location {
+public class Northeast_ {
 
     @JsonProperty("lat")
     private Double lat;

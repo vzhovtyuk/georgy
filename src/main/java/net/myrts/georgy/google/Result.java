@@ -1,60 +1,173 @@
-package net.myrts.georgy.google;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
-/**
- * Created by georgy on 16.11.15.
- */
+package net.myrts.georgy.google;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Generated("org.jsonschema2pojo")
+@JsonPropertyOrder({
+    "address_components",
+    "formatted_address",
+    "geometry",
+    "partial_match",
+    "place_id",
+    "types"
+})
 public class Result {
 
-    private String formatted_address;
-
-    private boolean partial_match;
-
+    @JsonProperty("address_components")
+    private List<AddressComponent> addressComponents = new ArrayList<AddressComponent>();
+    @JsonProperty("formatted_address")
+    private String formattedAddress;
+    @JsonProperty("geometry")
     private Geometry geometry;
-
+    @JsonProperty("partial_match")
+    private Boolean partialMatch;
+    @JsonProperty("place_id")
+    private String placeId;
+    @JsonProperty("types")
+    private List<String> types = new ArrayList<String>();
     @JsonIgnore
-    private Object address_components;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonIgnore
-    private Object types;
-
-    public String getFormatted_address() {
-        return formatted_address;
+    /**
+     * 
+     * @return
+     *     The addressComponents
+     */
+    @JsonProperty("address_components")
+    public List<AddressComponent> getAddressComponents() {
+        return addressComponents;
     }
 
-    public void setFormatted_address(String formatted_address) {
-        this.formatted_address = formatted_address;
+    /**
+     * 
+     * @param addressComponents
+     *     The address_components
+     */
+    @JsonProperty("address_components")
+    public void setAddressComponents(List<AddressComponent> addressComponents) {
+        this.addressComponents = addressComponents;
     }
 
-    public boolean isPartial_match() {
-        return partial_match;
+    /**
+     * 
+     * @return
+     *     The formattedAddress
+     */
+    @JsonProperty("formatted_address")
+    public String getFormattedAddress() {
+        return formattedAddress;
     }
 
-    public void setPartial_match(boolean partial_match) {
-        this.partial_match = partial_match;
+    /**
+     * 
+     * @param formattedAddress
+     *     The formatted_address
+     */
+    @JsonProperty("formatted_address")
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
     }
 
+    /**
+     * 
+     * @return
+     *     The geometry
+     */
+    @JsonProperty("geometry")
     public Geometry getGeometry() {
         return geometry;
     }
 
+    /**
+     * 
+     * @param geometry
+     *     The geometry
+     */
+    @JsonProperty("geometry")
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
     }
 
-    public Object getAddress_components() {
-        return address_components;
+    /**
+     * 
+     * @return
+     *     The partialMatch
+     */
+    @JsonProperty("partial_match")
+    public Boolean getPartialMatch() {
+        return partialMatch;
     }
 
-    public void setAddress_components(Object address_components) {
-        this.address_components = address_components;
+    /**
+     * 
+     * @param partialMatch
+     *     The partial_match
+     */
+    @JsonProperty("partial_match")
+    public void setPartialMatch(Boolean partialMatch) {
+        this.partialMatch = partialMatch;
     }
 
-    public Object getTypes() {
+    /**
+     * 
+     * @return
+     *     The placeId
+     */
+    @JsonProperty("place_id")
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    /**
+     * 
+     * @param placeId
+     *     The place_id
+     */
+    @JsonProperty("place_id")
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    /**
+     * 
+     * @return
+     *     The types
+     */
+    @JsonProperty("types")
+    public List<String> getTypes() {
         return types;
     }
 
-    public void setTypes(Object types) {
+    /**
+     * 
+     * @param types
+     *     The types
+     */
+    @JsonProperty("types")
+    public void setTypes(List<String> types) {
         this.types = types;
     }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }

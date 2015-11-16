@@ -1,52 +1,125 @@
+
 package net.myrts.georgy.google;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * Created by georgy on 16.11.15.
- */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Generated("org.jsonschema2pojo")
+@JsonPropertyOrder({
+    "bounds",
+    "location",
+    "location_type",
+    "viewport"
+})
 public class Geometry {
-    private Location location ;
 
-    private String location_type;
-
+    @JsonProperty("bounds")
+    private Bounds bounds;
+    @JsonProperty("location")
+    private Location location;
+    @JsonProperty("location_type")
+    private String locationType;
+    @JsonProperty("viewport")
+    private Viewport viewport;
     @JsonIgnore
-    private Object bounds;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonIgnore
+    /**
+     * 
+     * @return
+     *     The bounds
+     */
+    @JsonProperty("bounds")
+    public Bounds getBounds() {
+        return bounds;
+    }
 
-    private Object viewport;
+    /**
+     * 
+     * @param bounds
+     *     The bounds
+     */
+    @JsonProperty("bounds")
+    public void setBounds(Bounds bounds) {
+        this.bounds = bounds;
+    }
 
+    /**
+     * 
+     * @return
+     *     The location
+     */
+    @JsonProperty("location")
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * 
+     * @param location
+     *     The location
+     */
+    @JsonProperty("location")
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    public String getLocation_type() {
-        return location_type;
+    /**
+     * 
+     * @return
+     *     The locationType
+     */
+    @JsonProperty("location_type")
+    public String getLocationType() {
+        return locationType;
     }
 
-    public void setLocation_type(String location_type) {
-        this.location_type = location_type;
+    /**
+     * 
+     * @param locationType
+     *     The location_type
+     */
+    @JsonProperty("location_type")
+    public void setLocationType(String locationType) {
+        this.locationType = locationType;
     }
 
-    public Object getBounds() {
-        return bounds;
-    }
-
-    public void setBounds(Object bounds) {
-        this.bounds = bounds;
-    }
-
-    public Object getViewport() {
+    /**
+     * 
+     * @return
+     *     The viewport
+     */
+    @JsonProperty("viewport")
+    public Viewport getViewport() {
         return viewport;
     }
 
-    public void setViewport(Object viewport) {
+    /**
+     * 
+     * @param viewport
+     *     The viewport
+     */
+    @JsonProperty("viewport")
+    public void setViewport(Viewport viewport) {
         this.viewport = viewport;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

@@ -6,9 +6,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.List;
-import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+
+
 
 
 /**
@@ -48,7 +51,13 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
         URLConnection conn = url.openConnection();
 
         InputStream in = conn.getInputStream() ;
-        ObjectMapper mapper = new ObjectMapper();
+
+        ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+
+        // IMPORTANT
+        // without this option set adding new fields breaks old code
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         GoogleResponse response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
         in.close();
         return response;
@@ -69,11 +78,18 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
    */
         URL url = new URL(URL + "?latlng="
                 + URLEncoder.encode(latlongString, "UTF-8") + "&sensor=false");
+
         // Open the Connection
         URLConnection conn = url.openConnection();
 
         InputStream in = conn.getInputStream() ;
-        ObjectMapper mapper = new ObjectMapper();
+
+        ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+
+        // IMPORTANT
+        // without this option set adding new fields breaks old code
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         GoogleResponse response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
         in.close();
         return response;
@@ -83,14 +99,14 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
 
     public static void main(String[] args) throws IOException {
 
-        GoogleResponse res = new AddressConverter().convertToLatLong("Apollo Bunder,Mumbai ,Maharashtra, India");
+        GoogleResponse res = new AddressConverter().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
         if(res.getStatus().equals("OK"))
         {
             for(Result result : res.getResults())
             {
                 System.out.println("Lattitude of address is :"  +result.getGeometry().getLocation().getLat());
                 System.out.println("Longitude of address is :" + result.getGeometry().getLocation().getLng());
-                System.out.println("Location is " + result.getGeometry().getLocation_type());
+                System.out.println("Location is " + result.getGeometry().getLocationType());
             }
         }
         else
@@ -104,7 +120,7 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
         {
             for(Result result : res1.getResults())
             {
-                System.out.println("address is :"  +result.getFormatted_address());
+                System.out.println("address is :"  +result.getFormattedAddress());
             }
         }
         else
