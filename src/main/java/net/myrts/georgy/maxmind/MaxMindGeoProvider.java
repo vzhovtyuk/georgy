@@ -9,6 +9,7 @@ import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
 import net.myrts.georgy.api.AddressLocation;
+import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.api.GeoProvider;
 import net.myrts.georgy.api.GeorgyException;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class MaxMindGeoProvider implements GeoProvider {
             final Subdivision subdivision = response.getMostSpecificSubdivision();
             final City city = response.getCity();
             final Postal postal = response.getPostal();
-            final Location location = response.getLocation();
+            final Location maxMindLocation = response.getLocation();
             final AddressLocation addressLocation = new AddressLocation();
             if (locale != null) {
                 final String localeName = getLocaleString(locale);
@@ -61,8 +62,7 @@ public class MaxMindGeoProvider implements GeoProvider {
             addressLocation.setCountryIsoCode(country.getIsoCode());
             addressLocation.setSubdivisionIsoCode(subdivision.getIsoCode());
             addressLocation.setPostalCode(postal.getCode());
-            addressLocation.setLatitude(location.getLatitude());
-            addressLocation.setLongitude(location.getLongitude());
+            addressLocation.setLocation(new GeoLocation(maxMindLocation.getLatitude(), maxMindLocation.getLongitude()));
             return addressLocation;
         } catch (IOException e) {
             LOG.error("Failed to find ip database " + IP_DB_PATH, e);

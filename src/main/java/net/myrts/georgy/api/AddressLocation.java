@@ -14,8 +14,7 @@ public class AddressLocation {
     private String postalCode;
     private String subdivision;
     private String subdivisionIsoCode;
-    private Double latitude;
-    private Double longitude;
+    private GeoLocation location;
 
     public String getCity() {
         return city;
@@ -65,20 +64,12 @@ public class AddressLocation {
         this.subdivisionIsoCode = subdivisionIsoCode;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public GeoLocation getLocation() {
+        return location;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setLocation(GeoLocation location) {
+        this.location = location;
     }
 
     @Override

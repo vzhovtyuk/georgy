@@ -1,10 +1,10 @@
 package net.myrts.georgy.maxmind;
 
 import net.myrts.georgy.api.AddressLocation;
+import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.api.GeorgyException;
 import org.junit.Test;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
@@ -33,9 +33,7 @@ public class MaxMindGeoProviderTest {
         assertEquals("City does not match " + addressLocation, "Minneapolis", addressLocation.getCity());
 
         assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
-
-        assertEquals("Latitude does not match " + addressLocation, 44.9759d, addressLocation.getLatitude(), 0.00001);
-        assertEquals("Longitude does not match for " + addressLocation, -93.2166d, addressLocation.getLongitude(), 0.00001);
+        assertLocation(44.9759d, -93.2166d, addressLocation);
     }
 
     @Test(expected = GeorgyException.class)
@@ -58,9 +56,7 @@ public class MaxMindGeoProviderTest {
         assertEquals("City does not match " + addressLocation, "ミネアポリス", addressLocation.getCity());
 
         assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
-
-        assertEquals("Latitude does not match " + addressLocation, 44.9759d, addressLocation.getLatitude(), 0.00001);
-        assertEquals("Longitude does not match for " + addressLocation, -93.2166d, addressLocation.getLongitude(), 0.00001);
+        assertLocation(44.9759d, -93.2166d, addressLocation);
     }
     
     @Test
@@ -77,8 +73,12 @@ public class MaxMindGeoProviderTest {
 
         assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
 
-        assertEquals("Latitude does not match " + addressLocation, 44.9759d, addressLocation.getLatitude(), 0.00001);
-        assertEquals("Longitude does not match for " + addressLocation, -93.2166d, addressLocation.getLongitude(), 0.00001);
+        assertLocation(44.9759d, -93.2166d, addressLocation);
     }
 
+    private void assertLocation(Double latitude, Double longitude, AddressLocation addressLocation) {
+        final GeoLocation geoLocation = addressLocation.getLocation();
+        assertEquals("Latitude does not match " + addressLocation, latitude, geoLocation.getLatitude(), 0.00001);
+        assertEquals("Longitude does not match for " + addressLocation, longitude, geoLocation.getLongitude(), 0.00001);
+    }
 }
