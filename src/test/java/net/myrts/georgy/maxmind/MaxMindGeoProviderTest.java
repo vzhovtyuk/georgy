@@ -1,5 +1,6 @@
 package net.myrts.georgy.maxmind;
 
+import net.myrts.georgy.api.Address;
 import net.myrts.georgy.api.AddressLocation;
 import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.api.GeorgyException;
@@ -24,15 +25,16 @@ public class MaxMindGeoProviderTest {
     public void shouldParseLocationByIPFromLocalDB() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
         final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101");
-        assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
-        assertEquals("Country does not match " + addressLocation, "United States", addressLocation.getCountry());
+        final Address address = addressLocation.getAddress();
+        assertEquals("Country iso code does not match " + addressLocation, "US", address.getCountryIsoCode());
+        assertEquals("Country does not match " + addressLocation, "United States", address.getCountry());
 
-        assertEquals("State name does not match " + addressLocation, "Minnesota", addressLocation.getSubdivision());
-        assertEquals("State iso code does not match " + addressLocation, "MN", addressLocation.getSubdivisionIsoCode());
+        assertEquals("State name does not match " + addressLocation, "Minnesota", address.getSubdivision());
+        assertEquals("State iso code does not match " + addressLocation, "MN", address.getSubdivisionIsoCode());
 
-        assertEquals("City does not match " + addressLocation, "Minneapolis", addressLocation.getCity());
+        assertEquals("City does not match " + addressLocation, "Minneapolis", address.getCity());
 
-        assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
+        assertEquals("Postal code does not match " + addressLocation, "55414", address.getPostalCode());
         assertLocation(44.9759d, -93.2166d, addressLocation);
     }
 
@@ -47,15 +49,16 @@ public class MaxMindGeoProviderTest {
     public void shouldParseLocationByIPFromLocalDBLocalized() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
         final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101", Locale.JAPANESE);
-        assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
-        assertEquals("Country does not match " + addressLocation, "アメリカ合衆国", addressLocation.getCountry());
+        final Address address = addressLocation.getAddress();
+        assertEquals("Country iso code does not match " + addressLocation, "US", address.getCountryIsoCode());
+        assertEquals("Country does not match " + addressLocation, "アメリカ合衆国", address.getCountry());
 
-        assertEquals("State name does not match " + addressLocation, "ミネソタ州", addressLocation.getSubdivision());
-        assertEquals("State iso code does not match " + addressLocation, "MN", addressLocation.getSubdivisionIsoCode());
+        assertEquals("State name does not match " + addressLocation, "ミネソタ州", address.getSubdivision());
+        assertEquals("State iso code does not match " + addressLocation, "MN", address.getSubdivisionIsoCode());
 
-        assertEquals("City does not match " + addressLocation, "ミネアポリス", addressLocation.getCity());
+        assertEquals("City does not match " + addressLocation, "ミネアポリス", address.getCity());
 
-        assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
+        assertEquals("Postal code does not match " + addressLocation, "55414", address.getPostalCode());
         assertLocation(44.9759d, -93.2166d, addressLocation);
     }
     
@@ -63,15 +66,16 @@ public class MaxMindGeoProviderTest {
     public void shouldParseLocationByIPFromLocalDBLocalizedNotExists() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
         final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101", SIMPLIFIED_CHINESE);
-        assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
-        assertEquals("Country does not match " + addressLocation, "美国", addressLocation.getCountry());
+        final Address address = addressLocation.getAddress();
+        assertEquals("Country iso code does not match " + addressLocation, "US", address.getCountryIsoCode());
+        assertEquals("Country does not match " + addressLocation, "美国", address.getCountry());
 
-        assertEquals("State name does not match " + addressLocation, "Minnesota", addressLocation.getSubdivision());
-        assertEquals("State iso code does not match " + addressLocation, "MN", addressLocation.getSubdivisionIsoCode());
+        assertEquals("State name does not match " + addressLocation, "Minnesota", address.getSubdivision());
+        assertEquals("State iso code does not match " + addressLocation, "MN", address.getSubdivisionIsoCode());
 
-        assertEquals("City does not match " + addressLocation, "明尼阿波利斯", addressLocation.getCity());
+        assertEquals("City does not match " + addressLocation, "明尼阿波利斯", address.getCity());
 
-        assertEquals("Postal code does not match " + addressLocation, "55414", addressLocation.getPostalCode());
+        assertEquals("Postal code does not match " + addressLocation, "55414", address.getPostalCode());
 
         assertLocation(44.9759d, -93.2166d, addressLocation);
     }

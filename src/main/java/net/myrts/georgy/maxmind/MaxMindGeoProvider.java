@@ -8,6 +8,7 @@ import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
+import net.myrts.georgy.api.Address;
 import net.myrts.georgy.api.AddressLocation;
 import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.api.GeoProvider;
@@ -49,19 +50,21 @@ public class MaxMindGeoProvider implements GeoProvider {
             final Postal postal = response.getPostal();
             final Location maxMindLocation = response.getLocation();
             final AddressLocation addressLocation = new AddressLocation();
+            final Address address = new Address();
             if (locale != null) {
                 final String localeName = getLocaleString(locale);
-                addressLocation.setCountry(getByKeyOrDefault(country.getNames(), localeName, country.getName()));
-                addressLocation.setSubdivision(getByKeyOrDefault(subdivision.getNames(), localeName, subdivision.getName()));
-                addressLocation.setCity(getByKeyOrDefault(city.getNames(), localeName, city.getName()));
+                address.setCountry(getByKeyOrDefault(country.getNames(), localeName, country.getName()));
+                address.setSubdivision(getByKeyOrDefault(subdivision.getNames(), localeName, subdivision.getName()));
+                address.setCity(getByKeyOrDefault(city.getNames(), localeName, city.getName()));
             } else {
-                addressLocation.setCountry(country.getName());
-                addressLocation.setSubdivision(subdivision.getName());
-                addressLocation.setCity(city.getName());
+                address.setCountry(country.getName());
+                address.setSubdivision(subdivision.getName());
+                address.setCity(city.getName());
             }
-            addressLocation.setCountryIsoCode(country.getIsoCode());
-            addressLocation.setSubdivisionIsoCode(subdivision.getIsoCode());
-            addressLocation.setPostalCode(postal.getCode());
+            address.setCountryIsoCode(country.getIsoCode());
+            address.setSubdivisionIsoCode(subdivision.getIsoCode());
+            address.setPostalCode(postal.getCode());
+            addressLocation.setAddress(address);
             addressLocation.setLocation(new GeoLocation(maxMindLocation.getLatitude(), maxMindLocation.getLongitude()));
             return addressLocation;
         } catch (IOException e) {
