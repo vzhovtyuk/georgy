@@ -23,7 +23,7 @@ public class MaxMindGeoProviderTest {
     @Test
     public void shouldParseLocationByIPFromLocalDB() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
-        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp(InetAddress.getByName("128.101.101.101"));
+        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101");
         assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
         assertEquals("Country does not match " + addressLocation, "United States", addressLocation.getCountry());
 
@@ -41,14 +41,14 @@ public class MaxMindGeoProviderTest {
     @Test(expected = GeorgyException.class)
     public void shouldParseLocationByIPNotFound() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
-        maxMindGeoProvider.getAddressByIp(InetAddress.getByName("127.0.0.1"));
+        maxMindGeoProvider.getAddressByIp("127.0.0.1");
         fail("Should fail with GeorgyException: The address 127.0.0.1 is not in the database");
     }
 
     @Test
     public void shouldParseLocationByIPFromLocalDBLocalized() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
-        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp(InetAddress.getByName("128.101.101.101"), Locale.JAPANESE);
+        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101", Locale.JAPANESE);
         assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
         assertEquals("Country does not match " + addressLocation, "アメリカ合衆国", addressLocation.getCountry());
 
@@ -66,7 +66,7 @@ public class MaxMindGeoProviderTest {
     @Test
     public void shouldParseLocationByIPFromLocalDBLocalizedNotExists() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
-        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp(InetAddress.getByName("128.101.101.101"), SIMPLIFIED_CHINESE);
+        final AddressLocation addressLocation = maxMindGeoProvider.getAddressByIp("128.101.101.101", SIMPLIFIED_CHINESE);
         assertEquals("Country iso code does not match " + addressLocation, "US", addressLocation.getCountryIsoCode());
         assertEquals("Country does not match " + addressLocation, "美国", addressLocation.getCountry());
 

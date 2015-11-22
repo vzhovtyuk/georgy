@@ -33,14 +33,14 @@ public class MaxMindGeoProvider implements GeoProvider {
     private static final String IP_DB_PATH = "GeoLite2-City.mmdb";
 
     @Override
-    public AddressLocation getAddressByIp(InetAddress inetAddress, Locale locale) throws GeorgyException {
+    public AddressLocation getAddressByIp(String inetAddress, Locale locale) throws GeorgyException {
         final InputStream inputStream = getClass().getResourceAsStream(IP_DB_PATH);
         final DatabaseReader reader;
 
         try {
             reader = new DatabaseReader.Builder(inputStream).build();
 
-            final CityResponse response = reader.city(inetAddress);
+            final CityResponse response = reader.city(InetAddress.getByName(inetAddress));
 
             final Country country = response.getCountry();
             final Subdivision subdivision = response.getMostSpecificSubdivision();
@@ -74,7 +74,7 @@ public class MaxMindGeoProvider implements GeoProvider {
     }
 
     @Override
-    public AddressLocation getAddressByIp(InetAddress byName) throws GeorgyException {
+    public AddressLocation getAddressByIp(String byName) throws GeorgyException {
         return getAddressByIp(byName, null);
     }
 
