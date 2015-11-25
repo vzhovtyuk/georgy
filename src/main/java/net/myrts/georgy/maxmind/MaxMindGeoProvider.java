@@ -8,7 +8,9 @@ import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
+import net.myrts.georgy.api.Address;
 import net.myrts.georgy.api.AddressLocation;
+import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.api.GeoProvider;
 import net.myrts.georgy.api.GeorgyException;
 import org.slf4j.Logger;
@@ -33,36 +35,37 @@ public class MaxMindGeoProvider implements GeoProvider {
     private static final String IP_DB_PATH = "GeoLite2-City.mmdb";
 
     @Override
-    public AddressLocation getAddressByIp(InetAddress inetAddress, Locale locale) throws GeorgyException {
+    public AddressLocation getAddressByIp(String inetAddress, Locale locale) throws GeorgyException {
         final InputStream inputStream = getClass().getResourceAsStream(IP_DB_PATH);
         final DatabaseReader reader;
 
         try {
             reader = new DatabaseReader.Builder(inputStream).build();
 
-            final CityResponse response = reader.city(inetAddress);
+            final CityResponse response = reader.city(InetAddress.getByName(inetAddress));
 
             final Country country = response.getCountry();
             final Subdivision subdivision = response.getMostSpecificSubdivision();
             final City city = response.getCity();
             final Postal postal = response.getPostal();
-            final Location location = response.getLocation();
+            final Location maxMindLocation = response.getLocation();
             final AddressLocation addressLocation = new AddressLocation();
+            final Address address = new Address();
             if (locale != null) {
                 final String localeName = getLocaleString(locale);
-                addressLocation.setCountry(getByKeyOrDefault(country.getNames(), localeName, country.getName()));
-                addressLocation.setSubdivision(getByKeyOrDefault(subdivision.getNames(), localeName, subdivision.getName()));
-                addressLocation.setCity(getByKeyOrDefault(city.getNames(), localeName, city.getName()));
+                address.setCountry(getByKeyOrDefault(country.getNames(), localeName, country.getName()));
+                address.setSubdivision(getByKeyOrDefault(subdivision.getNames(), localeName, subdivision.getName()));
+                address.setCity(getByKeyOrDefault(city.getNames(), localeName, city.getName()));
             } else {
-                addressLocation.setCountry(country.getName());
-                addressLocation.setSubdivision(subdivision.getName());
-                addressLocation.setCity(city.getName());
+                address.setCountry(country.getName());
+                address.setSubdivision(subdivision.getName());
+                address.setCity(city.getName());
             }
-            addressLocation.setCountryIsoCode(country.getIsoCode());
-            addressLocation.setSubdivisionIsoCode(subdivision.getIsoCode());
-            addressLocation.setPostalCode(postal.getCode());
-            addressLocation.setLatitude(location.getLatitude());
-            addressLocation.setLongitude(location.getLongitude());
+            address.setCountryIsoCode(country.getIsoCode());
+            address.setSubdivisionIsoCode(subdivision.getIsoCode());
+            address.setPostalCode(postal.getCode());
+            addressLocation.setAddress(address);
+            addressLocation.setLocation(new GeoLocation(maxMindLocation.getLatitude(), maxMindLocation.getLongitude()));
             return addressLocation;
         } catch (IOException e) {
             LOG.error("Failed to find ip database " + IP_DB_PATH, e);
@@ -74,7 +77,7 @@ public class MaxMindGeoProvider implements GeoProvider {
     }
 
     @Override
-    public AddressLocation getAddressByIp(InetAddress byName) throws GeorgyException {
+    public AddressLocation getAddressByIp(String byName) throws GeorgyException {
         return getAddressByIp(byName, null);
     }
 

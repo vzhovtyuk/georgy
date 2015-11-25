@@ -14,7 +14,7 @@ import java.util.Locale;
  *         Time: 7:56 PM
  */
 public interface GeoProvider {
-    AddressLocation getAddressByIp(InetAddress inetAddress, Locale locale) throws IOException, GeoIp2Exception, GeorgyException;
+    AddressLocation getAddressByIp(String inetAddress, Locale locale) throws GeorgyException;
 
-    AddressLocation getAddressByIp(InetAddress byName) throws GeorgyException;
+    AddressLocation getAddressByIp(String byName) throws GeorgyException;
 }
