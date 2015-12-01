@@ -1,5 +1,5 @@
 
-package net.myrts.georgy.google;
+package net.myrts.georgy.google.stubs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "lat",
     "lng"
 })
-public class Location {
+public class Southwest {
 
     @JsonProperty("lat")
     private Double lat;

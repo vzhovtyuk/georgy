@@ -1,9 +1,7 @@
 
-package net.myrts.georgy.google;
+package net.myrts.georgy.google.stubs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,56 +13,56 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "results",
-    "status"
+    "lat",
+    "lng"
 })
-public class GoogleResponse {
+public class Northeast_ {
 
-    @JsonProperty("results")
-    private List<Result> results = new ArrayList<Result>();
-    @JsonProperty("status")
-    private String status;
+    @JsonProperty("lat")
+    private Double lat;
+    @JsonProperty("lng")
+    private Double lng;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
      * @return
-     *     The results
+     *     The lat
      */
-    @JsonProperty("results")
-    public List<Result> getResults() {
-        return results;
+    @JsonProperty("lat")
+    public Double getLat() {
+        return lat;
     }
 
     /**
      * 
-     * @param results
-     *     The results
+     * @param lat
+     *     The lat
      */
-    @JsonProperty("results")
-    public void setResults(List<Result> results) {
-        this.results = results;
+    @JsonProperty("lat")
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
     /**
      * 
      * @return
-     *     The status
+     *     The lng
      */
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
+    @JsonProperty("lng")
+    public Double getLng() {
+        return lng;
     }
 
     /**
      * 
-     * @param status
-     *     The status
+     * @param lng
+     *     The lng
      */
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
+    @JsonProperty("lng")
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     @JsonAnyGetter
