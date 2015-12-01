@@ -12,8 +12,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+
 /**
- * Created by georgy on 01.12.15.
+ * Created by Oleksandr Pavlov avpavlov108@gmail.com on 15.11.15.
  */
 public class GoogleGeoProviderTest {
 
@@ -75,7 +76,7 @@ public class GoogleGeoProviderTest {
 
                 // address is
                 assertEquals("India", result.get(9).getFormattedAddress());
-            
+
         } else {
             System.out.println(res1.getStatus());
         }
