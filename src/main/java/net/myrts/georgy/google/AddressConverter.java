@@ -95,37 +95,6 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
 
     }
 
-    public static void main(String[] args) throws IOException {
 
-        GoogleResponse res = new AddressConverter().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
-        if(res.getStatus().equals("OK"))
-        {
-            for(Result result : res.getResults())
-            {
-                System.out.println("Lattitude of address is :"  +result.getGeometry().getLocation().getLat());
-                System.out.println("Longitude of address is :" + result.getGeometry().getLocation().getLng());
-                System.out.println("Location is " + result.getGeometry().getLocationType());
-            }
-        }
-        else
-        {
-            System.out.println(res.getStatus());
-        }
-
-        System.out.println("\n");
-        GoogleResponse res1 = new AddressConverter().convertFromLatLong("18.92038860,72.83013059999999");
-        if(res1.getStatus().equals("OK"))
-        {
-            for(Result result : res1.getResults())
-            {
-                System.out.println("address is :"  +result.getFormattedAddress());
-            }
-        }
-        else
-        {
-            System.out.println(res1.getStatus());
-        }
-
-    }
 
 }
