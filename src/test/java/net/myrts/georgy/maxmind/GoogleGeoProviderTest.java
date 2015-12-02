@@ -1,6 +1,6 @@
 package net.myrts.georgy.maxmind;
 
-import net.myrts.georgy.google.AddressConverter;
+import net.myrts.georgy.google.AddressProvider;
 import net.myrts.georgy.google.stubs.GoogleResponse;
 import net.myrts.georgy.google.stubs.Result;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class GoogleGeoProviderTest {
 
     @Test
     public void convertAddressToLatLong() throws IOException {
-        GoogleResponse res = new AddressConverter().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
+        GoogleResponse res = new AddressProvider().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
         if (res.getStatus().equals("OK")) {
             for (Result result : res.getResults()) {
                 //Lattitude of address is
@@ -43,7 +43,7 @@ public class GoogleGeoProviderTest {
     @Test
     public void convertLatLongToAddress() throws IOException {
 
-        GoogleResponse res1 = new AddressConverter().convertFromLatLong("18.92038860,72.83013059999999");
+        GoogleResponse res1 = new AddressProvider().convertFromLatLong("18.92038860,72.83013059999999");
         if (res1.getStatus().equals("OK")) {
                 List<Result> result = res1.getResults();
 

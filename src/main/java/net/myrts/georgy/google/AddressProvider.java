@@ -24,7 +24,7 @@ import net.myrts.georgy.google.stubs.Result;
  * "http://maps.googleapis.com/maps/api/geocode/xml";
  *
  */
-public class AddressConverter {
+public class AddressProvider {
 
 /**
  * Here the fullAddress String is in format like
