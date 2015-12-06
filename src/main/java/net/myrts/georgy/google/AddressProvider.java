@@ -47,22 +47,26 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
      */
     public GoogleResponse convertToLatLong(String fullAddress) throws IOException {
 
-
         URL url = new URL(URL + "?address="
                 + URLEncoder.encode(fullAddress, "UTF-8") + "&sensor=false");
         // Open the Connection
         URLConnection conn = url.openConnection();
 
-        InputStream in = conn.getInputStream() ;
+        GoogleResponse response;
 
-        ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+        try(InputStream in = conn.getInputStream()) {
 
-        // IMPORTANT
-        // without this option set adding new fields breaks old code
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 
-        GoogleResponse response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
-        in.close();
+            // IMPORTANT
+            // without this option set adding new fields breaks old code
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+            response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
+            in.close();
+
+        }
+
         return response;
 
     }
@@ -81,23 +85,25 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
      */
     public GoogleResponse convertFromLatLong(String latlongString) throws IOException {
 
-
         URL url = new URL(URL + "?latlng="
                 + URLEncoder.encode(latlongString, "UTF-8") + "&sensor=false");
 
         // Open the Connection
         URLConnection conn = url.openConnection();
 
-        InputStream in = conn.getInputStream() ;
+        GoogleResponse response;
 
-        ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+        try(InputStream in = conn.getInputStream()) {
+            ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 
-        // IMPORTANT
-        // without this option set adding new fields breaks old code
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            // IMPORTANT
+            // without this option set adding new fields breaks old code
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        GoogleResponse response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
-        in.close();
+            response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
+            in.close();
+        }
+
         return response;
 
     }
