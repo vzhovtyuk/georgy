@@ -2,14 +2,21 @@ package net.myrts.georgy.google;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import net.myrts.georgy.api.GeoLocation;
 import net.myrts.georgy.google.stubs.GoogleResponse;
 import net.myrts.georgy.google.stubs.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,14 +31,16 @@ import net.myrts.georgy.google.stubs.Result;
  * "http://maps.googleapis.com/maps/api/geocode/xml";
  *
  */
-public class AddressProvider {
+public class GoogleAddressProvider {
 
 /**
  * Here the fullAddress String is in format like
  * "address,city,state,zipcode". Here address means "street number + route"
- * .
+ *
  */
-private static final String URL = "http://maps.googleapis.com/maps/api/geocode/json";
+    private static final String URL = "http://maps.googleapis.com/maps/api/geocode/json";
+
+    private static final Logger LOG = LoggerFactory.getLogger(GoogleAddressProvider.class);
 
     /**
      * Create an java.net.URL object by passing the request URL in
@@ -45,14 +54,19 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
      *
      * @param fullAddress String
      */
-    public GoogleResponse convertToLatLong(String fullAddress) throws IOException {
+    public GeoLocation convertToLatLong(String fullAddress)  {
 
-        URL url = new URL(URL + "?address="
-                + URLEncoder.encode(fullAddress, "UTF-8") + "&sensor=false");
-        // Open the Connection
-        URLConnection conn = url.openConnection();
+        URL url = null;
+        GeoLocation geoLocation = new GeoLocation(0.0,0.0);
 
-        GoogleResponse response;
+        try {
+            url = new URL(URL + "?address="
+                    + URLEncoder.encode(fullAddress, "UTF-8") + "&sensor=false");
+
+            // Open the Connection
+            URLConnection conn = url.openConnection();
+
+            GoogleResponse response;
 
         try(InputStream in = conn.getInputStream()) {
 
@@ -62,13 +76,41 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
             // without this option set adding new fields breaks old code
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            response = (GoogleResponse)mapper.readValue(in,GoogleResponse.class);
-            in.close();
+            response = mapper.readValue(in,GoogleResponse.class);
 
+
+          //  GoogleResponse res = new GoogleAddressProvider().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
+
+            if (response.getStatus().equals("OK")) {
+                for (Result result : response.getResults()) {
+                    geoLocation = new GeoLocation(
+                            result.getGeometry().getLocation().getLat(),
+                            result.getGeometry().getLocation().getLng()
+                    );
+                    LOG.info("Latitude ", result.getGeometry().getLocation().getLat());
+                    LOG.info("Longitude ", result.getGeometry().getLocation().getLng());
+                    LOG.info("Location type ", result.getGeometry().getLocationType());
+
+                }
+            } else {
+                LOG.info(response.getStatus());
+            }
         }
 
-        return response;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            LOG.error("MalformedURLException ", e);
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("UnsupportedEncodingException ", e);
+        } catch (JsonMappingException e) {
+            LOG.error("JsonMappingException ", e);
+        } catch (JsonParseException e) {
+            LOG.error("JsonParseException ", e);
+        } catch (IOException e) {
+            LOG.error("IOException ", e);
+        }
 
+        return geoLocation;
     }
 
     /**
@@ -83,10 +125,10 @@ private static final String URL = "http://maps.googleapis.com/maps/api/geocode/j
      *
      * @param latlongString String
      */
-    public GoogleResponse convertFromLatLong(String latlongString) throws IOException {
+    public GoogleResponse convertFromLatLong(String latLongString) throws IOException {
 
         URL url = new URL(URL + "?latlng="
-                + URLEncoder.encode(latlongString, "UTF-8") + "&sensor=false");
+                + URLEncoder.encode(latLongString, "UTF-8") + "&sensor=false");
 
         // Open the Connection
         URLConnection conn = url.openConnection();

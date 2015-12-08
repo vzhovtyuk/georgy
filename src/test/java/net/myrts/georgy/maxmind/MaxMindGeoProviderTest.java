@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
  *         Date: 10/19/15
  *         Time: 5:48 PM
  */
-public class MaxMindGeoProviderTest {
+public class MaxMindGeoProviderTest implements net.myrts.georgy.assertLocation {
     @Test
     public void shouldParseLocationByIPFromLocalDB() throws UnknownHostException, GeorgyException {
         final MaxMindGeoProvider maxMindGeoProvider = new MaxMindGeoProvider();
@@ -80,7 +80,13 @@ public class MaxMindGeoProviderTest {
         assertLocation(44.9759d, -93.2166d, addressLocation);
     }
 
-    private void assertLocation(Double latitude, Double longitude, AddressLocation addressLocation) {
+    @Override
+    public void assertLocation(Double latitude, Double longitude, GeoLocation geoLocation) {
+
+    }
+
+    @Override
+    public void assertLocation(Double latitude, Double longitude, AddressLocation addressLocation) {
         final GeoLocation geoLocation = addressLocation.getLocation();
         assertEquals("Latitude does not match " + addressLocation, latitude, geoLocation.getLatitude(), 0.00001);
         assertEquals("Longitude does not match for " + addressLocation, longitude, geoLocation.getLongitude(), 0.00001);
