@@ -1,6 +1,7 @@
-package net.myrts.georgy.maxmind;
+package net.myrts.georgy.google;
 
-import net.myrts.georgy.google.AddressProvider;
+import net.myrts.georgy.api.GeoLocation;
+import net.myrts.georgy.google.GoogleAddressProvider;
 import net.myrts.georgy.google.stubs.GoogleResponse;
 import net.myrts.georgy.google.stubs.Result;
 import org.junit.Test;
@@ -12,38 +13,52 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.myrts.georgy.api.Address;
+import net.myrts.georgy.api.AddressLocation;
+import net.myrts.georgy.api.GeoLocation;
+import net.myrts.georgy.api.GeorgyException;
+import org.junit.Test;
+
+import java.net.UnknownHostException;
+import java.util.Locale;
+
+import static java.util.Locale.SIMPLIFIED_CHINESE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 /**
  * Created by Oleksandr Pavlov avpavlov108@gmail.com on 15.11.15.
  */
-public class GoogleGeoProviderTest {
+public class GoogleGeoProviderTest implements net.myrts.georgy.assertLocation {
 
-    @Test
-    public void convertAddressToLatLong() throws IOException {
-        GoogleResponse res = new AddressProvider().convertToLatLong("Apollo Bunder, Mumbai, Maharashtra, India");
-        if (res.getStatus().equals("OK")) {
-            for (Result result : res.getResults()) {
-                //Lattitude of address is
-                String strLat ="18.9203886";
-                assertTrue(result.getGeometry().getLocation().getLat() > 18);
+    @Override
+    public void assertLocation(Double latitude, Double longitude, GeoLocation geoLocation) {
+        assertEquals(latitude, geoLocation.getLatitude(), 0.00001);
+        assertEquals(longitude, geoLocation.getLongitude(), 0.00001);
+    }
 
-                String strLon ="72.83013059999999";
-                //Longitude of address is
-                assertTrue(result.getGeometry().getLocation().getLng() >72);
-
-                //Location is
-                assertEquals("APPROXIMATE", result.getGeometry().getLocationType());
-            }
-        } else {
-            System.out.println(res.getStatus());
-        }
+    @Override
+    public void assertLocation(Double latitude, Double longitude, AddressLocation addressLocation) {
 
     }
 
     @Test
-    public void convertLatLongToAddress() throws IOException {
+    public void shouldConvertAddressToLatLong() throws IOException {
+        final String address = "Apollo Bunder, Mumbai, Maharashtra, India";
+        final double dLat =18.9203886d;
+        final double dLon =72.8301305d;
+        final GeoLocation geoLocation = new GoogleAddressProvider().convertToLatLong(address);
+        assertLocation(dLat, dLon, geoLocation);
+    }
 
-        GoogleResponse res1 = new AddressProvider().convertFromLatLong("18.92038860,72.83013059999999");
+    @Test
+    public void shouldConvertLatLongToAddress() throws IOException {
+
+        GoogleResponse res1 = new GoogleAddressProvider().convertFromLatLong("18.92038860,72.83013059999999");
         if (res1.getStatus().equals("OK")) {
                 List<Result> result = res1.getResults();
 
